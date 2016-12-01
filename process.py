@@ -14,10 +14,11 @@ class Process:
             if self.is_weichen(parse_list[0]):
                 if parse_list[1] == "好感度" or parse_list[1] == "親密度":
                     target_list = db.query(WCFavorability).all()
+                    target_info = []
                     for target_row in target_list:
-                        target_info = "{name} 親密度: {score}".format(
-                            name=target_row.name, score=target_row.score)
-                        self.message = "\n".join(target_info)
+                        target_info.append(u"{name} 親密度: {score}".format(
+                            name=target_row.name, score=target_row.score))
+                    self.message = u"\n".join(target_info)
             else:
                 ops = {"+": operator.add, "-": operator.sub}
                 target_name = parse_list[0]
