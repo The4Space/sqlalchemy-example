@@ -12,12 +12,14 @@ class Process:
         parse_list = request_data.split(" ")
         try:
             if self.is_weichen(parse_list[0]):
-                if parse_list[1] == "好感度" or parse_list[1] == "親密度":
+                if parse_list[1] == u"好感度" or parse_list[1] == u"親密度":
                     target_list = db.query(WCFavorability).all()
                     target_info = []
                     for target_row in target_list:
-                        target_info.append(u"{name} 親密度: {score}".format(
-                            name=target_row.name, score=target_row.score))
+                        target_info.append(u"{name} 親密度: {score} {heart}".format(
+                            name=target_row.name,
+                            score=target_row.score,
+                            heart=self.get_heart(target_row.score)))
                     self.message = u"\n".join(target_info)
             else:
                 ops = {"+": operator.add, "-": operator.sub}
@@ -35,15 +37,30 @@ class Process:
                     update_data = {"score": score}
                     db.query(WCFavorability).filter(WCFavorability.name==target_name).update(update_data)
                     db.commit()
-                self.message = "添加好感度成功~"
+                self.message = u"添加好感度成功~"
         except Exception as e:
             db.rollback()
+            print e
             raise Exception(e)
         finally:
             db.close()
-
         return self.message
 
+    def get_heart(self, score):
+        if score < 0:
+            heart_str = ":poop:"
+        elif 0 < score <= 10:
+            heart_str = ":heart:"
+        elif 10 <= score <= 30:
+            heart_str = ":heart::heart:"
+        elif 30 <= score <= 50:
+            heart_str = ":heart::heart::heart:"
+        elif 50 <= score <= 70:
+            heart_str = ":heart::heart::heart::heart:"
+        else:
+            heart_str = ":heart::heart::heart::heart::heart:"
+
+        return heart_str
 
     def is_weichen(self, name):
         if name == "weichen" or name == "wc":

@@ -1,3 +1,6 @@
+# coding=utf-8
+import simplejson as json
+
 from flask import Flask, request
 
 from process import process
@@ -8,7 +11,9 @@ app = Flask(__name__)
 @app.route('/', methods=["POST"])
 def main():
     data = request.data
-    response = process.controller(data)
+    if type(data) == str:
+        data = json.loads(data)
+    response = process.controller(data["text"][0])
     send_slack_message(response)
     return response
 
