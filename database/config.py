@@ -12,13 +12,13 @@ with open(config_path) as yml_file:
 
 db_config = config["database"]
 
-connection_string = 'mysql+pymysql://{user}:{password}@{host}:3306/{db_name}?charset=utf8'\
+connection_string = 'mysql+pymysql://{user}:{password}@{host}:3306/{db_name}?charset=utf8' \
     .format(
-        user=db_config["db_user"],
-        password=db_config["db_password"],
-        host=db_config["db_host"],
-        db_name=db_config["db_name"]
-    )
+    user=db_config["db_user"],
+    password=db_config["db_password"],
+    host=db_config["db_host"],
+    db_name=db_config["db_name"]
+)
 
 engine = create_engine(
     connection_string,
@@ -33,4 +33,3 @@ db = scoped_session(
         bind=engine
     )
 )
-
