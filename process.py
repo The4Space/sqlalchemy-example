@@ -49,7 +49,7 @@ class Process:
     def get_heart(self, score):
         if score < 0:
             heart_str = ":poop:"
-        elif 0 < score <= 10:
+        elif 0 <= score <= 10:
             heart_str = ":heart:"
         elif 10 <= score <= 30:
             heart_str = ":heart::heart:"
