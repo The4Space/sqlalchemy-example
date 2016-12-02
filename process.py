@@ -12,7 +12,7 @@ class Process:
         parse_list = request_data.split(" ")
         try:
             if self.is_weichen(parse_list[0]):
-                if parse_list[1] == u"好感度" or parse_list[1] == u"親密度":
+                if parse_list[1] == u"favor" or parse_list[1] == u"favorlist":
                     target_list = db.query(WCFavorability).all()
                     target_info = []
                     for target_row in target_list:

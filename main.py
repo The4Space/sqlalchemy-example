@@ -10,11 +10,13 @@ app = Flask(__name__)
 
 @app.route('/', methods=["POST"])
 def main():
-    data = request.data
-    if type(data) == str:
-        data = json.loads(data)
-    response = process.controller(data["text"][0])
-    send_slack_message(response)
+    try:
+        data = dict(request.form)
+        response = process.controller(data["text"][0][1:])
+        send_slack_message(response)
+    except Exception as e:
+        response = ""
+        print(e)
     return response
 
 if __name__ == "__main__":
