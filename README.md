@@ -1,2 +1,0 @@
-# sqlalchemy-example
-sqlalchemy-example
